@@ -168,36 +168,30 @@ function main() {
             switch (_b.label) {
                 case 0:
                     In = {
-                        id: "sgs3000@playauto.co.kr",
-                        password: "tlsrhkdtn"
+                        id: "",
+                        password: ""
                     };
                     output = {
                         mails: []
                     };
-                    // await new Promise((resolve,reject)=>{
-                    //     r.question("your gmail id: ",function(id: string){
-                    //            In.id=id;
-                    //         r.question("password: ",function(password: string){
-                    //            In.password=password;
-                    //            r.close();
-                    //            resolve();
-                    //          })
-                    //      })
-                    // })
+                    return [4 /*yield*/, new Promise(function (resolve, reject) {
+                            r.question("your gmail id: ", function (id) {
+                                In.id = id;
+                                r.question("password: ", function (password) {
+                                    In.password = password;
+                                    r.close();
+                                    resolve();
+                                });
+                            });
+                        })
+                        // In=await authentication();
+                    ];
+                case 1:
+                    _b.sent();
                     // In=await authentication();
                     _a = output;
                     return [4 /*yield*/, getData(In)];
-                case 1:
-                    // await new Promise((resolve,reject)=>{
-                    //     r.question("your gmail id: ",function(id: string){
-                    //            In.id=id;
-                    //         r.question("password: ",function(password: string){
-                    //            In.password=password;
-                    //            r.close();
-                    //            resolve();
-                    //          })
-                    //      })
-                    // })
+                case 2:
                     // In=await authentication();
                     _a.mails = _b.sent();
                     return [2 /*return*/, output];

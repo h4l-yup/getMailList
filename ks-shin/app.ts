@@ -101,22 +101,22 @@ async function getData(In: input): Promise<items[]> { // input(사용자의 id�
 
 async function main(): Promise<output> {//사용자의 아이디와 패스워드를 입력받아서 getData() 함수를 호출 하는 main 함수 return값은 promise(output이 담긴)
     let In: input = {
-        id: "sgs3000@playauto.co.kr",
-        password: "tlsrhkdtn"
+        id: "",
+        password: ""
     };
     let output: output = {
         mails: []
     };
-    // await new Promise((resolve,reject)=>{
-    //     r.question("your gmail id: ",function(id: string){
-    //            In.id=id;
-    //         r.question("password: ",function(password: string){
-    //            In.password=password;
-    //            r.close();
-    //            resolve();
-    //          })
-    //      })
-    // })
+    await new Promise((resolve,reject)=>{
+        r.question("your gmail id: ",function(id: string){
+               In.id=id;
+            r.question("password: ",function(password: string){
+               In.password=password;
+               r.close();
+               resolve();
+             })
+         })
+    })
 
     // In=await authentication();
     output.mails = await getData(In);
