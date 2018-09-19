@@ -55,7 +55,7 @@ async function getData(In: input): Promise<items[]> { // input(사용자의 id�
         await page.waitForSelector('.mb', { timeout: 6500, visible: true });
     } catch (e) {
         console.log("비밀번호가 맞지않습니다.");
-        browser.close();
+        browser.close(); 
     }
     let names: Array<ElementHandle> = await page.$$('.yW'); //페이지 내의 셀렉터 .yW 를 모두 찾아 ElementHandle형태로 순서대로 배열에 넣어 반환 
     let subjects: Array<ElementHandle> = await page.$$('.y6');
