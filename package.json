@@ -4,7 +4,7 @@
   "description": "Get the list of Gmail List of specific account with TypeScript &amp; Puppeteer",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha --timeout 30000 ./ks-shin/test.js",
+    "test": "node_modules/.bin/mocha --timeout 50000 ./ks-shin/test.js",
     "test_ts": "node_modules/.bin/ts-mocha --timeout 50000 ./ks-shin/test.ts"
   },
   "repository": {
