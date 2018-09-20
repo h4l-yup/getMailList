@@ -43,7 +43,7 @@ var r = readline.createInterface({
 });
 function getData(In) {
     return __awaiter(this, void 0, void 0, function () {
-        var mails, browser, page, e_1, pass, e_2, names, subjects, _a, _b, _i, index, data, _c, _d;
+        var mails, browser, page, e_1, e_2, names, subjects, _a, _b, _i, index, data, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -82,12 +82,8 @@ function getData(In) {
                     console.log("아이디 가 없습니다.");
                     browser.close();
                     return [3 /*break*/, 10];
-                case 10:
-                    pass = In.password;
-                    return [4 /*yield*/, page.evaluate(function (_a) {
-                            var pass = _a.pass;
-                            document.querySelector('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input').value = pass;
-                        }, { pass: pass })];
+                case 10: return [4 /*yield*/, page.evaluate(//참조한 pass를 가지고 패스워드입력창에 대입 
+                    "document.querySelector('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input').value = \"" + In.password + "\";")];
                 case 11:
                     _e.sent(); //왜부변수 pass의 값참조
                     return [4 /*yield*/, page.click('#passwordNext')];

@@ -44,10 +44,10 @@ async function getData(In: input): Promise<items[]> { // input(사용자의 id�
         console.log("아이디 가 없습니다.");
         browser.close();
     }
-    let pass: string = In.password;
-    await page.evaluate(({ pass }) => { //참조한 pass를 가지고 패스워드입력창에 대입 
-        document.querySelector('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input').value = pass;
-    }, { pass }); //왜부변수 pass의 값참조
+    
+    await page.evaluate( //In.pass를 가지고 패스워드입력창에 대입 
+       `document.querySelector('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input').value = "${In.password}";`
+    );
 
     await page.click('#passwordNext'); //로그인 버튼 클릭
 
