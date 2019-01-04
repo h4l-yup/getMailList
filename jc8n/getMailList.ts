@@ -5,15 +5,15 @@ import { user } from './interfaces';
 
 //이메일, 비밀번호 입력받는 함수
 export const input = async () => {
-  const id_password: user = {
+  const login_information: user = {
     email: '',
     password: ''
   };
 
-  id_password.email = await prompt('email : ');
-  id_password.password = await prompt.password('password : ');
+  login_information.email = await prompt('email : ');
+  login_information.password = await prompt.password('password : ');
 
-  return id_password;
+  return login_information;
 }
 
 //###1 puppeteer 준비
@@ -26,7 +26,7 @@ export const puppeteer_ready = async () => {
   return page;
 }
 
-//###2 구글 페이지 이동
+//###2 구글 페이지 접속
 export const connect_page = async (page) => {
   await page.goto('https://www.google.com/')
 
