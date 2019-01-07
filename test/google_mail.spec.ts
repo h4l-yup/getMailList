@@ -1,5 +1,5 @@
 import { account } from '../Martin/interfaces'
-import { get_page, google_login, get_browser, close_browser, get_mail_list, get_gmails } from "../Martin/google_mail";
+import { get_page, google_login, get_browser, close_browser, get_mails } from "../Martin/google_mail";
 import { fail } from 'assert';
 
 let browser ;
@@ -10,37 +10,39 @@ const account: account = {
 	password: process.argv[6],
 };
 
-describe('gmail list test', function() {
-	it('get_brower 실행', async function() {
+describe('start program', function() {
+	it('get brower', async function() {
 		try {
 			browser = await get_browser();
 		} catch (error) {
 			fail(error);
 		}
+		console.log('browser : ' + browser);
 	});
-	it('get_page 실행', async function() {
+	it('get page', async function() {
 		try {
 			page = await get_page(browser);
 		} catch (error) {
 			fail(error);
 		}
+		console.log('page : ' + page);
 	});
-	it('google login', async function() {
+	it('login google', async function() {
 		try {
 			await google_login(account, page);
 		} catch (error) {
 			fail(error);
 		}
 	}).timeout(10000);
-	it('mail_load', async function() {
+	it('get mails', async function() {
 		try {
-			await get_mail_list(page);
-			console.log(get_gmails());
+			const mails = await get_mails(page);
+			console.log(mails);
 		} catch (error) {
 			fail(error);
 		}
 	});
-	it('browser close', async function() {
+	it('close browser', async function() {
 		try {
 			await close_browser(browser);
 		} catch (error) {
