@@ -1,4 +1,4 @@
-import { input, puppeteer_ready, connect_page, login, move_to_gmail, get_sender, get_mail_titles } from '../jc8n/getMailList';
+import { input, puppeteer_ready, connect_page, login, get_sender, get_mail_titles } from '../jc8n/getMailList';
 import { mail, user } from '../jc8n/interfaces'
 import { assert } from 'chai';
 import { puppeteer } from '../node_modules/puppeteer';
@@ -20,7 +20,7 @@ describe('### Third assignment ###', function () {
         assert.isNotNull(page);
     })
 
-    it('#3 connect google page', async () => {
+    it('#3 connect login page', async () => {
         const result = await connect_page(page);
         let result_status;
         if(result !== null) {
@@ -31,36 +31,34 @@ describe('### Third assignment ###', function () {
         assert.equal(result_status, 200);
     }).timeout(10000)
 
-
-
     it('#4 login', async () => {
-        const result = await login(id_password, page);
-        console.log(result);
-    }).timeout(10000)
+        let error_message;
+        try{
+            await login(id_password, page);
+        } catch(error) {
+            error_message = error;
+        } finally {
+            assert.isUndefined(error_message);
+        }
 
-    it('#5 move to gmail page', async () => {
-        await move_to_gmail(page);
         
     }).timeout(10000)
 
-
-
-    
     let senders;
-    it('#6 get sender list', async () => {
+    it('#5 get sender list', async () => {
         senders = await get_sender(page);
         
         assert.isNotNull(senders);
     }).timeout(10000)
 
     let subjects;
-    it('#7 get mail title list', async () => {
+    it('#6 get mail title list', async () => {
         subjects = await get_mail_titles(page);
         
         assert.isNotNull(subjects);
     }).timeout(10000)
 
-    it('#8 output mail list', () => {
+    it('#7 output mail list', () => {
         const mails: mail[] = [];
 
         //메일제목과 보낸사람을 객체배열에 저장
@@ -72,5 +70,6 @@ describe('### Third assignment ###', function () {
         }
 
         console.log(mails);
+        assert.isNotNull(mails);
     })
 })

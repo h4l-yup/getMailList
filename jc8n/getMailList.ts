@@ -26,39 +26,36 @@ export const puppeteer_ready = async (): Promise<puppeteer.Page> => {
   return page;
 }
 
-//###2 구글 페이지 접속
+//###2 구글 로그인 페이지 접속
 export const connect_page = async (page: puppeteer.Page): Promise<puppeteer.Response | null> => {
-  const result = await page.goto('https://www.google.com/');
+  const result = await page.goto('https://accounts.google.com/ServiceLogin/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=AddSession');
 
   return result;
 }
 
 //###3 아이디 비밀번호 입력 후 로그인
 export const login = async (user_information: user, page: puppeteer.Page) => {
-  //로그인버튼 클릭
-  await page.waitForSelector('#gb_70')
-  await page.click('#gb_70')
-
   //await navigationPromise
+
   //메일주소 입력 후 다음버튼 클릭
   await page.waitForSelector('input[type="email"]')
   await page.type('input[type="email"]', user_information.email)
   await page.click('#identifierNext')
 
   //비밀번호 입력 후 다음버튼 클릭
-  await page.waitForSelector('input[type="password"]', { visible: true })
+  try {
+    await page.waitForSelector('input[type="password"]', { visible: true,  timeout: 2000})
+  } catch (error) {
+    throw error
+  }
   await page.type('input[type="password"]', user_information.password)
   await page.click('#passwordNext')
 
+
+
 }
 
-//###4 gmail버튼 클릭
-export const move_to_gmail = async (page: puppeteer.Page) => {
-  await page.waitForSelector('#gbw > div > div > div.gb_Ke.gb_R.gb_gh.gb_7g > div:nth-child(1) > a', { visible: true })
-  await page.click('#gbw > div > div > div.gb_Ke.gb_R.gb_gh.gb_7g > div:nth-child(1) > a')
-}
-
-//###5 보낸사람 추출
+//###4 보낸사람 추출
 export const get_sender = async (page: puppeteer.Page): Promise<string[]> => {
   await page.waitForSelector('tbody tr .yW .bA4 span');
   const senders: string[] = await page.evaluate(() => {
@@ -69,7 +66,7 @@ export const get_sender = async (page: puppeteer.Page): Promise<string[]> => {
   return senders;
 }
 
-//###6 메일제목 추출
+//###5 메일제목 추출
 export const get_mail_titles = async (page: puppeteer.Page): Promise<string[]> => {
   await page.waitForSelector('tbody tr .bog span');
   const mail_titles: string[] = await page.evaluate(() => {
