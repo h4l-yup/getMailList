@@ -1,11 +1,13 @@
 import { input, puppeteer_ready, connect_page, login, move_to_gmail, get_sender, get_mail_titles } from '../jc8n/getMailList';
-import { mail } from '../jc8n/interfaces'
+import { mail, user } from '../jc8n/interfaces'
 import { assert } from 'chai';
-
+import { puppeteer } from '../node_modules/puppeteer';
+// import { describe } from '../node_modules/ts-mocha'
 
 describe('### Third assignment ###', function () {
-    let id_password: object;
-    let page: object;
+    let id_password: user;
+    let page: puppeteer.Page;
+    
     it('#1 input id and password', async () => {
         id_password = await input();
 
@@ -14,35 +16,49 @@ describe('### Third assignment ###', function () {
 
     it('#2 ready for puppeteer', async () => {
         page = await puppeteer_ready();
-        //console.log(page)
+        
+        assert.isNotNull(page);
     })
 
     it('#3 connect google page', async () => {
-        page = await connect_page(page);
-        //console.log(page);
-    })
+        const result = await connect_page(page);
+        let result_status;
+        if(result !== null) {
+            //사이트에 접속 성공시 status메서드가 200을 반환
+            result_status = result.status();
+        }
+
+        assert.equal(result_status, 200);
+    }).timeout(10000)
+
+
 
     it('#4 login', async () => {
-        page = await login(id_password, page);
-        //console.log(page);
-    }).timeout(100000)
+        const result = await login(id_password, page);
+        console.log(result);
+    }).timeout(10000)
 
     it('#5 move to gmail page', async () => {
-        page = await move_to_gmail(page);
-        //console.log(page);
-    }).timeout(100000)
+        await move_to_gmail(page);
+        
+    }).timeout(10000)
 
+
+
+    
     let senders;
     it('#6 get sender list', async () => {
         senders = await get_sender(page);
-        // console.log(senders);
-    }).timeout(100000)
+        
+        assert.isNotNull(senders);
+    }).timeout(10000)
 
     let subjects;
     it('#7 get mail title list', async () => {
         subjects = await get_mail_titles(page);
-        // console.log(subjects); 
-    }).timeout(100000)
+        
+        assert.isNotNull(subjects);
+    }).timeout(10000)
 
     it('#8 output mail list', () => {
         const mails: mail[] = [];

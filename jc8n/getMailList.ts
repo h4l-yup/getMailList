@@ -4,7 +4,7 @@ import { user } from './interfaces';
 
 
 //이메일, 비밀번호 입력받는 함수
-export const input = async () => {
+export const input = async (): Promise<user> => {
   const login_information: user = {
     email: '',
     password: ''
@@ -17,7 +17,7 @@ export const input = async () => {
 }
 
 //###1 puppeteer 준비
-export const puppeteer_ready = async () => {
+export const puppeteer_ready = async (): Promise<puppeteer.Page> => {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
   //화면크기 지정
@@ -27,14 +27,14 @@ export const puppeteer_ready = async () => {
 }
 
 //###2 구글 페이지 접속
-export const connect_page = async (page) => {
-  await page.goto('https://www.google.com/')
+export const connect_page = async (page: puppeteer.Page): Promise<puppeteer.Response | null> => {
+  const result = await page.goto('https://www.google.com/');
 
-  return page;
+  return result;
 }
 
 //###3 아이디 비밀번호 입력 후 로그인
-export const login = async (id_password, page) => {
+export const login = async (user_information: user, page: puppeteer.Page) => {
   //로그인버튼 클릭
   await page.waitForSelector('#gb_70')
   await page.click('#gb_70')
@@ -42,30 +42,26 @@ export const login = async (id_password, page) => {
   //await navigationPromise
   //메일주소 입력 후 다음버튼 클릭
   await page.waitForSelector('input[type="email"]')
-  await page.type('input[type="email"]', id_password.email)
+  await page.type('input[type="email"]', user_information.email)
   await page.click('#identifierNext')
 
   //비밀번호 입력 후 다음버튼 클릭
   await page.waitForSelector('input[type="password"]', { visible: true })
-  await page.type('input[type="password"]', id_password.password)
+  await page.type('input[type="password"]', user_information.password)
   await page.click('#passwordNext')
 
-  return page;
 }
 
 //###4 gmail버튼 클릭
-export const move_to_gmail = async (page) => {
-  await page.waitForSelector('#gbw > div > div > div.gb_Je.gb_R.gb_fh.gb_6g > div:nth-child(1) > a', { visible: true })
-  await page.click('#gbw > div > div > div.gb_Je.gb_R.gb_fh.gb_6g > div:nth-child(1) > a')
-
-  return page;
+export const move_to_gmail = async (page: puppeteer.Page) => {
+  await page.waitForSelector('#gbw > div > div > div.gb_Ke.gb_R.gb_gh.gb_7g > div:nth-child(1) > a', { visible: true })
+  await page.click('#gbw > div > div > div.gb_Ke.gb_R.gb_gh.gb_7g > div:nth-child(1) > a')
 }
 
-
 //###5 보낸사람 추출
-export const get_sender = async (page) => {
+export const get_sender = async (page: puppeteer.Page): Promise<string[]> => {
   await page.waitForSelector('tbody tr .yW .bA4 span');
-  const senders = await page.evaluate(() => {
+  const senders: string[] = await page.evaluate(() => {
     const anchors = Array.from(document.querySelectorAll('tbody tr .yW .bA4 span'));
     return anchors.map(anchor => anchor.textContent);
   });
@@ -74,14 +70,14 @@ export const get_sender = async (page) => {
 }
 
 //###6 메일제목 추출
-export const get_mail_titles = async (page) => {
-   await page.waitForSelector('tbody tr .bog span');
-   const mail_titles = await page.evaluate(() => {
-     const anchors = Array.from(document.querySelectorAll('tbody tr .bog span'));
-     return anchors.map(anchor => anchor.textContent);
-   });
+export const get_mail_titles = async (page: puppeteer.Page): Promise<string[]> => {
+  await page.waitForSelector('tbody tr .bog span');
+  const mail_titles: string[] = await page.evaluate(() => {
+    const anchors = Array.from(document.querySelectorAll('tbody tr .bog span'));
+    return anchors.map(anchor => anchor.textContent);
+  });
 
-   return mail_titles;
+  return mail_titles;
 }
 
 /* export async function getMailList() {
@@ -93,7 +89,7 @@ export const get_mail_titles = async (page) => {
   page = await move_to_gmail(page);
   const senders: string[] = await get_sender(page);
   const subjects: string[] = await get_mail_titles(page);
-  
+
   const mail_informations: mail[] = [];
 
   //메일제목과 보낸사람을 객체배열에 저장

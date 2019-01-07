@@ -20,7 +20,8 @@
     "@types/puppeteer": "^1.11.1",
     "async-prompt": "^1.0.1",
     "cheerio": "^1.0.0-rc.2",
-    "puppeteer": "^1.11.0"
+    "puppeteer": "^1.11.0",
+    "ts-mocha": "^2.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
